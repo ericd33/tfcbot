@@ -18,6 +18,7 @@ client.once(Events.ClientReady, (c) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
+  if (interaction.channel?.id !== process.env.PICKUP_CHANNEL_ID) return;
   await add(interaction, pickup);
   await rm(interaction, pickup);
 });
