@@ -1,4 +1,5 @@
 export const maps = [
+  { name: "ninguno", description: "Add sin nominar" },
   { name: "openfire_lowgrens", description: "2 mirv" },
   { name: "schtop", description: "2 mirv" },
   { name: "phantom_lg", description: "2 mirv" },

@@ -2,7 +2,15 @@ import { REST, Routes } from "discord.js";
 export const commands = [
   {
     name: "add",
-    description: "Adds yourself to the pickup",
+    description: "Addear al pickup.",
+  },
+  {
+    name: "rm",
+    description: "Removerte del pickup.",
+  },
+  {
+    name: "st",
+    description: "Status of the pickup.",
   },
 ];
 

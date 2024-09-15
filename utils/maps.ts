@@ -8,6 +8,6 @@ export function mapsMapperIntoOpts(maps: MapsInfo) {
     return new StringSelectMenuOptionBuilder()
       .setLabel(map.name)
       .setDescription(map.description)
-      .setValue(map.description);
+      .setValue(map.name);
   });
 }

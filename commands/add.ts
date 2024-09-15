@@ -1,35 +1,37 @@
 import type { CacheType, Interaction } from "discord.js";
 import {
   ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  Client,
   ComponentType,
-  Events,
-  GatewayIntentBits,
   StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
 } from "discord.js";
-import { init } from "./commands";
 import { mapsMapperIntoOpts } from "../utils/maps";
 import { maps } from "../constants/maps";
+import type { Pickup } from "../models/pickup";
 
-export default async function Add(interaction: Interaction<CacheType>) {
-  const stringOptions = mapsMapperIntoOpts(maps);
-
-  const mapSelectorInput = new StringSelectMenuBuilder()
-    .setCustomId("mappick")
-    .addOptions(stringOptions);
-
-  const secondActionRow =
-    new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-      mapSelectorInput,
-    );
+export default async function add(
+  interaction: Interaction<CacheType>,
+  pickup: Pickup,
+) {
+  if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "add") {
+    // Select map options
+    const stringOptions = mapsMapperIntoOpts(maps);
+
+    // Map's menu
+    const mapSelectorInput = new StringSelectMenuBuilder()
+      .setCustomId("mappick")
+      .addOptions(stringOptions);
+
+    //Message row
+    const firstActionRow =
+      new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+        mapSelectorInput,
+      );
+
     const response = await interaction.reply({
-      components: [firstActionRow, secondActionRow],
-      content: "conte",
+      components: [firstActionRow],
+      content: "Si queres sugerir un mapa, seleccionalo",
       ephemeral: true,
     });
 
@@ -41,9 +43,13 @@ export default async function Add(interaction: Interaction<CacheType>) {
 
       collector.on("collect", async (i) => {
         const selection = i.values[0];
-        await i.reply(`seleccionaste ${selection}!`);
+        pickup.addPlayer({
+          discordName: interaction.user.displayName,
+          discordId: interaction.user.id,
+        });
+        await i.reply(`Te sumaste al pickup, nominando: ${selection}!`);
+        pickup.shoutState();
       });
-      console.log("a");
     } catch (err) {}
   }
 }
