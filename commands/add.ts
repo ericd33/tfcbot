@@ -42,12 +42,13 @@ export default async function add(
       });
 
       collector.on("collect", async (i) => {
-        const selection = i.values[0];
+        // this gets the map
+        // const selection = i.values[0];
         pickup.addPlayer({
           discordName: interaction.user.displayName,
           discordId: interaction.user.id,
         });
-        await i.reply(`Te sumaste al pickup, nominando: ${selection}!`);
+        await i.reply(`${interaction.user.displayName} se sumo al pickup!`);
         pickup.shoutState();
       });
     } catch (err) {}

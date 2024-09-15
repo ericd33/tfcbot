@@ -1,7 +1,7 @@
 import type { CacheType, Interaction } from "discord.js";
 import type { Pickup } from "../models/pickup";
 
-export default async function rm(
+export default async function st(
   interaction: Interaction<CacheType>,
   pickup: Pickup,
 ) {
