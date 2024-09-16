@@ -1,4 +1,9 @@
-import type { Client } from "discord.js";
+import {
+  EmbedBuilder,
+  type CacheType,
+  type Client,
+  type Interaction,
+} from "discord.js";
 export type PlayerPickupInfo = {
   discordName: string;
   discordId: string;
@@ -21,14 +26,26 @@ export class Pickup {
     this.players = this.players.filter((p) => p.discordId !== playerDiscordId);
   }
 
-  async shoutState() {
+  getPickupStateAsEmbed() {
+    const playerNames = this.players.map((player) => {
+      return { name: "\u200b", value: player.discordName };
+    });
+    const embed = new EmbedBuilder()
+      .setColor(0x0099ff)
+      .setTitle(`TFC Pickup ${this.players.length}/8`)
+      .setDescription("Se viene el pickup...")
+      .addFields(...playerNames);
+
+    return embed;
+  }
+
+  async shoutState(interaction: Interaction<CacheType>) {
     const channelId = process.env.PICKUP_CHANNEL_ID as string;
     const channel = await this.client.channels.fetch(channelId);
 
     if (channel && channel.isSendable()) {
-      const playerNames = this.players.map((player) => player.discordName);
-
-      channel.send(`Pickup ${this.players.length}/8 ${playerNames.toString()}`);
+      const embed = this.getPickupStateAsEmbed();
+      return interaction.reply({ embeds: [embed] });
     }
   }
 }

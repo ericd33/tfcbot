@@ -10,6 +10,6 @@ export default async function st(
   if (interaction.commandName === "st") {
     // Select map options
 
-    await pickup.shoutState();
+    await pickup.shoutState(interaction);
   }
 }

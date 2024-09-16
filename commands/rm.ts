@@ -12,10 +12,9 @@ export default async function rm(
 
     pickup.removePlayer(interaction.user.id);
 
-    await interaction.reply(
-      `${interaction.user.displayName} se removio del pickup.`,
-    );
-
-    await pickup.shoutState();
+    await interaction.reply({
+      embeds: [pickup.getPickupStateAsEmbed()],
+      content: `${interaction.user.displayName} se removio del pickup.`,
+    });
   }
 }

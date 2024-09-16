@@ -15,6 +15,14 @@ export default async function add(
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "add") {
+    if (
+      pickup.players.some(
+        (pickupPlayer) => pickupPlayer.discordId === interaction.user.id,
+      )
+    ) {
+      await interaction.reply("Ya estas en el pickup");
+      return;
+    }
     // Select map options
     const stringOptions = mapsMapperIntoOpts(maps);
 
@@ -48,8 +56,11 @@ export default async function add(
           discordName: interaction.user.displayName,
           discordId: interaction.user.id,
         });
-        await i.reply(`${interaction.user.displayName} se sumo al pickup!`);
-        pickup.shoutState();
+
+        await i.reply({
+          embeds: [pickup.getPickupStateAsEmbed()],
+          content: `<@&${process.env.PLAYER_ROLE}> ${interaction.user.displayName} se sumo al pickup!`,
+        });
       });
     } catch (err) {}
   }
