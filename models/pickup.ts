@@ -1,8 +1,7 @@
 import {
+  ChatInputCommandInteraction,
   EmbedBuilder,
-  type CacheType,
   type Client,
-  type Interaction,
 } from "discord.js";
 export type PlayerPickupInfo = {
   discordName: string;
@@ -18,7 +17,10 @@ export class Pickup {
     this.client = client;
   }
 
-  addPlayer(player: PlayerPickupInfo) {
+  addPlayer(player: PlayerPickupInfo, i: ChatInputCommandInteraction) {
+    if (this.players.includes(player)) {
+      i.reply("Ya estas en el pickup.");
+    }
     this.players.push(player);
   }
 
@@ -38,8 +40,11 @@ export class Pickup {
 
     return embed;
   }
+  async clear() {
+    this.players = [];
+  }
 
-  async shoutState(interaction: Interaction<CacheType>) {
+  async shoutState(interaction: ChatInputCommandInteraction) {
     const channelId = process.env.PICKUP_CHANNEL_ID as string;
     const channel = await this.client.channels.fetch(channelId);
 

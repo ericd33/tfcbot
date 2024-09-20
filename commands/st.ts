@@ -1,8 +1,8 @@
-import type { CacheType, Interaction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import type { Pickup } from "../models/pickup";
 
 export default async function st(
-  interaction: Interaction<CacheType>,
+  interaction: ChatInputCommandInteraction,
   pickup: Pickup,
 ) {
   if (!interaction.isChatInputCommand()) return;
