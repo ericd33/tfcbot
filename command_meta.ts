@@ -12,6 +12,10 @@ export const commands = [
     name: "st",
     description: "Status of the pickup.",
   },
+  {
+    name: "clear",
+    description: "Vacia la lista",
+  },
 ];
 
 export async function init() {

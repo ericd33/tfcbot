@@ -32,10 +32,17 @@ client.on("interactionCreate", async (interaction) => {
     await rm(interaction, pickup);
     await st(interaction, pickup);
 
-    if (interaction.member?.roles) {
-      const roles = interaction.member.roles as string[];
-      if (roles.some((r) => r === process.env.ADMIN_ROLE_ID)) {
+    if (interaction.member) {
+      //@ts-ignore
+      const roles = interaction.member.roles.cache as Map<string, any>;
+
+      if (roles.has(process.env.ADMIN_ROLE as string)) {
         await clear(interaction, pickup);
+      } else {
+        interaction.reply({
+          content: "No eres admin",
+          ephemeral: true,
+        });
       }
     }
   }
